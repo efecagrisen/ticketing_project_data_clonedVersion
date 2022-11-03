@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findByUserName(String username) { //BREAK TILL 2:15 PM(5 MIN REVIEW)
+    public UserDTO findByUserName(String username) {
 
         User user = userRepository.findByUserName(username);
         return userMapper.convertToDto(user);
@@ -43,6 +43,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteByUserName(String username) {
+
+    }
+
+    @Override
+    public UserDTO update(UserDTO user) {
+
+        //Find current user
+        User user1 = userRepository.findByUserName(user.getUserName());  //has id
+        //Map update user dto to entity object
+        User convertedUser = userMapper.convertToEntity(user);   // has id?
+        //set id to the converted object
+        convertedUser.setId(user1.getId());
+        //save the updated user in the db
+        userRepository.save(convertedUser);
+
+        return findByUserName(user.getUserName());
 
     }
 }

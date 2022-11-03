@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findByUserName(String username) {
+    public UserDTO findByUserName(String username) { //BREAK TILL 2:15 PM(5 MIN REVIEW)
 
         User user = userRepository.findByUserName(username);
         return userMapper.convertToDto(user);

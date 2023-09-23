@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -24,20 +26,20 @@ public class UserController {
     public String createUser(Model model){
 
         model.addAttribute("user", new UserDTO());
-        model.addAttribute("roles", roleService.listAllRoles());
-        model.addAttribute("users", userService.listAllUsers());
+        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("users", userService.findAll());
 
         return "/user/create";
 
     }
 
     @PostMapping("/create")
-    public String insertUser(@ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
+    public String insertUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("roles", roleService.listAllRoles());
-            model.addAttribute("users", userService.listAllUsers());
+            model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("users", userService.findAll());
 
             return "/user/create";
 
@@ -52,21 +54,21 @@ public class UserController {
     @GetMapping("/update/{username}")
     public String editUser(@PathVariable("username") String username, Model model) {
 
-        model.addAttribute("user", userService.findByUserName(username));
-        model.addAttribute("roles", roleService.listAllRoles());
-        model.addAttribute("users", userService.listAllUsers());
+        model.addAttribute("user", userService.findById(username));
+        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("users", userService.findAll());
 
         return "/user/update";
 
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
+    public String updateUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("roles", roleService.listAllRoles());
-            model.addAttribute("users", userService.listAllUsers());
+            model.addAttribute("roles", roleService.findAll());
+            model.addAttribute("users", userService.findAll());
 
             return "/user/update";
 
@@ -80,8 +82,7 @@ public class UserController {
 
     @GetMapping("/delete/{username}")
     public String deleteUser(@PathVariable("username") String username) {
-//        userService.deleteByUserName(username);
-        userService.delete(username);
+        userService.deleteById(username);
         return "redirect:/user/create";
     }
 

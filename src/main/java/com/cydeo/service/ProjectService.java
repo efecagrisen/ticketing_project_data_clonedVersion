@@ -1,17 +1,13 @@
 package com.cydeo.service;
 
 import com.cydeo.dto.ProjectDTO;
+import com.cydeo.dto.UserDTO;
 
 import java.util.List;
 
-public interface ProjectService {
+public interface  ProjectService extends CrudService<ProjectDTO,String>{
 
-    ProjectDTO getByProjectCode(String code);
-    List<ProjectDTO> listAllProjects();
-    void save(ProjectDTO dto);
-    void update(ProjectDTO dto);
-    void delete(String code);
-    void complete(String projectCode);
-
+    void complete(ProjectDTO project);
+    List<ProjectDTO> getCountedListOfProjectDTO(UserDTO manager);
 
 }
